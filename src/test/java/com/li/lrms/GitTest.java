@@ -13,4 +13,8 @@ import com.google.common.annotations.VisibleForTesting;
  */
 
 public class GitTest {
+    public static void main(String[] args) {
+        System.out.println("分支");
+        System.out.println("hot-fix test");
+    }
 }
