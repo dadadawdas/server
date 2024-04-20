@@ -222,8 +222,6 @@ public class AppointmentController {
 
         //返回结果
         return  Result.ok(usersPage);
-
-
     }
 
 

@@ -36,16 +36,16 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
     public boolean agreeAppointmentFirst(Long uid) {         //一级审核
 
         Appointment appointment = baseMapper.selectById(uid);    //获取预约申请表中的对象
-     /*   //如果该实验室该时间段已经满了，则拒绝预约
+       //如果该实验室该时间段已经满了，则拒绝预约
         //1.根据填的实验室id和日期时间段查询剩余容量
         //2.与输入的申请人数比较
         String labId = appointment.getLabId();
         Date appointDate = appointment.getAppointDate();
         Integer appointTime = appointment.getAppointTime();
         Integer count = appointment.getCount();
-        Labuse labuse = baseMapper.check(labId, appointDate);  //获取当天预约状况*/
+        Labuse labuse = baseMapper.check(labId, appointDate);  //获取当天预约状况
 
-/*
+
         if (appointTime==1&&labuse.getFirstTime()<count)   //预约第一节但是第一节 余量不够
             return false;
         if (appointTime==2&&labuse.getSecondTime()<count)
@@ -53,7 +53,7 @@ public class AppointmentServiceImpl extends ServiceImpl<AppointmentMapper, Appoi
         if (appointTime==3&&labuse.getThirdTime()<count)
             return false;
         if (appointTime==4&&labuse.getFourthTime()<count)
-            return false;*/
+            return false;
         //余量都够
         appointment.setCheckFirst("同意");          //一级意见
 
