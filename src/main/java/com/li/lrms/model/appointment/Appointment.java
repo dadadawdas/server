@@ -18,13 +18,13 @@ public class Appointment extends BaseEntity {
 
     private String labName;
 
-    private String userId;
+    private String userId;//后端
 
-    private String userName;
+    private String userName;//后端
 
-    private Integer count;
+    private Integer count;//数据库
 
-    private String description;
+    private String description;//前端
 
     private String status;
 

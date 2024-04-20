@@ -35,7 +35,9 @@ public class AppointmentController {
     public Result addAppointment(@RequestBody Appointment appointment,
                                 HttpServletRequest request){
         String memberId= JwtUtils.getMemberIdByJwtToken(request);   //返回用户id
+        System.out.println("memberId = " + memberId);
         String memberName = JwtUtils.getMemberNameByJwtToken(request);  //返回用户名
+        System.out.println("memberName = " + memberName);
 
         appointment.setUserId(memberId);
         appointment.setUserName(memberName);
