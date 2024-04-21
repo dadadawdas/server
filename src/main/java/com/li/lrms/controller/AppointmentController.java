@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.li.lrms.common.result.Result;
 
 import com.li.lrms.model.appointment.Appointment;
+import com.li.lrms.model.courseapp.CourseApp;
 import com.li.lrms.model.message.Msg;
 import com.li.lrms.service.AppointmentService;
 import com.li.lrms.util.JwtUtils;
@@ -19,6 +20,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
@@ -34,6 +36,7 @@ public class AppointmentController {
     @PostMapping("addAppointment")
     public Result addAppointment(@RequestBody Appointment appointment,
                                 HttpServletRequest request){
+
         String memberId= JwtUtils.getMemberIdByJwtToken(request);   //返回用户id
         System.out.println("memberId = " + memberId);
         String memberName = JwtUtils.getMemberNameByJwtToken(request);  //返回用户名
@@ -148,14 +151,14 @@ public class AppointmentController {
                                    HttpServletRequest request){
         String memberId= JwtUtils.getMemberIdByJwtToken(request);                   //返回用户id
         String role = appointmentService.getUserById(memberId);                     //返回用户权限
-        if (role.equals("实验室管理员")){                                             //身份为管理员一级
-            boolean flag=appointmentService.agreeAppointmentFirst(uid);
-            if (flag)
-                return Result.ok();
-            else
-                return Result.fail();
-        }
-        else if (role.equals("teacher")){                                           //身份为管理员二级
+//        if (role.equals("实验室管理员")){                                             //身份为管理员一级
+//            boolean flag=appointmentService.agreeAppointmentFirst(uid);
+//            if (flag)
+//                return Result.ok();
+//            else
+//                return Result.fail();
+//        }
+        if (role.equals("teacher")){                                           //身份为管理员二级
             boolean b = appointmentService.agreeAppointmentSecond(uid);
             if (b)
             return Result.ok();
@@ -178,14 +181,14 @@ public class AppointmentController {
         String memberId= JwtUtils.getMemberIdByJwtToken(request);        //返回用户id
         String role = appointmentService.getUserById(memberId);         //返回用户权限
 
-        if (role.equals("实验室管理员")){      //身份为管理员一级
-            boolean flag=appointmentService.refuseAppointmentFirst(uid);
-            if (flag)
-                return Result.ok();
-            else
-                return Result.fail("已经审核过了");
-        }
-        else if (role.equals("teacher")){  //身份为管理员二级
+//        if (role.equals("实验室管理员")){      //身份为管理员一级
+//            boolean flag=appointmentService.refuseAppointmentFirst(uid);
+//            if (flag)
+//                return Result.ok();
+//            else
+//                return Result.fail("已经审核过了");
+//        }
+        if(role.equals("teacher")){  //身份为管理员二级
             appointmentService.refuseAppointmentSecond(uid);
             return Result.ok();
         }
@@ -222,9 +225,14 @@ public class AppointmentController {
         //调用方法实现分页查询
         IPage<Appointment> usersPage=appointmentService.page(page,queryWrapper);
 
+//        Page<Appointment> page=appointmentService.query()
+//                .eq("user_id",userId)
+//                .page(new Page<>(current,limit));
         //返回结果
-        return  Result.ok(usersPage);
+//        return  Result.ok(page.getRecords());
+        return Result.ok(usersPage);
     }
+
 
 
     //7.用户取消预约
@@ -234,12 +242,14 @@ public class AppointmentController {
     public Result deleteAppointment(@PathVariable Long uid){
 
         Appointment appointment = appointmentService.getById(uid);
+        System.out.println("appointment = " + appointment);
         if (appointment.getStatus().equals("审核中")){                                 //只有在预约审核中的才能取消
-            Appointment byId = appointmentService.getById(uid);
-            byId.setStatus("已取消");
-
-          //  appointmentService.update();
-           appointmentService.removeById(uid);
+//            Appointment byId = appointmentService.getById(uid);
+//            byId.setStatus("已取消");
+            System.out.println(appointment.getStatus());
+            appointment.setStatus("已取消");
+            appointmentService.saveOrUpdate(appointment);
+//           appointmentService.removeById(uid);
 
             return Result.ok();
         }

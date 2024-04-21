@@ -14,7 +14,7 @@ import lombok.Data;
 @Data
 public class CourseApp {
     private String id;//数据库自增长
-    private String lab_id;//前端
+//    private String lab_id;//前端
     private String lab_name;//前端
     private String status;//数据库
     private Integer count;//数据库
